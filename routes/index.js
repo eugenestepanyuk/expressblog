@@ -18,8 +18,16 @@ router.post('/', async (request, response) => {
 });
 
 router.put('/:id', async (request, response) => {
-    const post = await Post.findByIdAndUpdate(request.params.id, request.body);
-    response.status(200).send(post);
+    const post = await Post.findById(request.params.id);
+
+    if (post) {
+        post.title = request.body.title || post.title;
+        post.content = request.body.content || post.content;
+
+        return response.json(await post.save());
+    }
+
+    return response.send(null);
 })
 
 router.delete('/:id', async (request, response) => {

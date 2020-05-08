@@ -89,9 +89,16 @@ function onCreatePost() {
     const $title = document.querySelector('#title');
     const $content = document.querySelector('#content');
 
+    $title.value = '';
+    $content.value = '';
+
     const modal = M.Modal.init(document.querySelector('.modal'));
     const createHeader = document.querySelector('#modal-header');
-    const createButton = document.querySelector('#modal-button-submit');   
+    const createButton = document.querySelector('#modal-button-submit').cloneNode(true);
+    const parent = document.querySelector('#modal-button-submit').parentNode;
+
+    document.querySelector('#modal-button-submit').remove();
+    parent.appendChild(createButton);   
 
     createHeader.textContent = 'New Post';
     createButton.textContent = 'Create Post';
@@ -118,6 +125,7 @@ function onCreatePost() {
     modal.open();
 }
 
+
 function onEditPost() {
     const $title = document.querySelector('#title');
     const $content = document.querySelector('#content');
@@ -129,7 +137,11 @@ function onEditPost() {
 
     const modal = M.Modal.init(document.querySelector('.modal'));
     const updateHeader = document.querySelector('#modal-header');
-    const updateButton = document.querySelector('#modal-button-submit');
+    const updateButton = document.querySelector('#modal-button-submit').cloneNode(true);
+    const parent = document.querySelector('#modal-button-submit').parentNode;
+
+    document.querySelector('#modal-button-submit').remove();
+    parent.appendChild(updateButton);
 
     updateHeader.textContent = '';
     updateButton.textContent = 'Update Post';
@@ -150,6 +162,7 @@ function onEditPost() {
     });
     modal.open();
 }
+
 
 function onDeletePost() {
     const decition = confirm('Are you sure?'); 
