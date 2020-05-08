@@ -18,15 +18,13 @@ router.post('/', async (request, response) => {
 });
 
 router.put('/:id', async (request, response) => {
-    const posts = await Post.find({_id: request.params.id});
-    posts.title = request.body.title;
-    posts.content = request.body.content;
-    response.status(200).send(posts);
+    const post = await Post.findByIdAndUpdate(request.params.id, request.body);
+    response.status(200).send(post);
 })
 
 router.delete('/:id', async (request, response) => {
-    await Post.remove({_id: request.params.id});
-    response.status(200).send();
+    const post = await Post.findByIdAndRemove(request.params.id);
+    response.status(200).send(post);
 });
 
 module.exports = router;

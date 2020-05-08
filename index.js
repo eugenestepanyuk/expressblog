@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const clientPath = path.join(__dirname, 'public');
 const app = express();
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error(err));
 
