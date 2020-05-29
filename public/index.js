@@ -89,8 +89,8 @@ function onCreatePost() {
     const $title = document.querySelector('#title');
     const $content = document.querySelector('#content');
 
-    $title.value = '';
-    $content.value = '';
+    //$title.value = '';
+    //$content.value = '';
 
     const modal = M.Modal.init(document.querySelector('.modal'));
     const createHeader = document.querySelector('#modal-header');
@@ -132,8 +132,8 @@ function onEditPost() {
     const $newTitle = document.querySelector('.card-title');
     const $newContent = document.querySelector('.card-paragraph');
 
-    $title.value = $newTitle.textContent;
-    $content.value = $newContent.textContent;
+    $title.value = '';
+    $content.value = '';
 
     const modal = M.Modal.init(document.querySelector('.modal'));
     const updateHeader = document.querySelector('#modal-header');
@@ -150,9 +150,7 @@ function onEditPost() {
         if($title.value && $content.value) {
             PostApi.editPost(this.id, { title: $title.value, content: $content.value }).then(post => {
                 const postIndex = posts.findIndex(post => post._id === this.id);
-                posts[postIndex] = post;
-                //posts[postIndex].title = $title.value;       
-                //posts[postIndex].content = $content.value;           
+                posts[postIndex] = post;         
 
                 renderPosts(posts);
 

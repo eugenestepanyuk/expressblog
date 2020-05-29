@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/post');
+const { Post } = require('../models/post');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 router.get('/', async (request, response) => { 
     const posts = await Post.find({});
