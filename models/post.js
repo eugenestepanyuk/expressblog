@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const postSchema = new Schema({
+
+const postSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        minlength: 3,
+        maxlength: 150
     },
     content: {
         type: String,
@@ -15,4 +17,6 @@ const postSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('posts', postSchema);
+const Post = mongoose.model('posts', postSchema)
+
+exports.Post = Post;
