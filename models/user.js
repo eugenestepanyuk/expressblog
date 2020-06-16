@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const config = require("config");
+const config = require("../config");
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -16,15 +16,21 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 100,
   },
+  confirmPassword: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 100,
+  },
   isAdmin: Boolean,
 });
 
-const User = mongoose.model("users", userSchema);
-
 userSchema.methods.generateAuthToken = function () {
   const { password, ...payload } = this;
-  const token = jwt.sign(payload, config.get("jwtPrivateKey"));
+  const token = jwt.sign(payload, config.jwt.secret);
   return token;
 };
+
+const User = mongoose.model("users", userSchema);
 
 exports.User = User;

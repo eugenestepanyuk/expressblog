@@ -129,8 +129,8 @@ function onCreatePost() {
 function onEditPost() {
     const $title = document.querySelector('#title');
     const $content = document.querySelector('#content');
-    const $newTitle = document.querySelector('.card-title');
-    const $newContent = document.querySelector('.card-paragraph');
+    //const $newTitle = document.querySelector('.card-title');
+    //const $newContent = document.querySelector('.card-paragraph');
 
     $title.value = '';
     $content.value = '';
@@ -173,5 +173,6 @@ function onDeletePost() {
         })
     }
 }
+
 
 window.onload = main;

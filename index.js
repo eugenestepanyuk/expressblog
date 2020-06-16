@@ -1,32 +1,38 @@
+require("./config/preload");
 const express = require('express');
-const path = require('path');
+//const path = require('path');
 const mongoose = require('mongoose');
-const home = require('./routes/home');
-const posts = require('./routes/posts');
-const users = require('./routes/users');
-const keys = require('./keys');
-const config = require('config');
+const config = require('./config');
+const router = require('./router');
+const ErrorCode = require('./middlewares/error');
 
-const port = process.env.PORT || 3000;
-const clientPath = path.join(__dirname, 'public');
+//console.log(`[${process.env.NODE_ENV.toUpperCase()}]: Loaded configuration`, config);
+
+//const clientPath = path.join(__dirname, 'public');
+//const registerPath = path.join(__dirname, 'public/register.html');
 const app = express();
 
-if(!config.get('jwtPrivateKey')) {
-    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+
+if (!config.jwt.secret) {
+    console.error(ErrorCode.FatalError);
     process.exit(1);
 }
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error(err));
-mongoose.set('useCreateIndex', true);
+(async () => {
+    try {
+        await mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+            .then(() => console.log('MongoDB connected'))
+            .catch(err => console.error(err));
 
-app.use('/', home);
-app.use(express.json());
-app.use('/posts', express.static(clientPath));
-app.use('/api/posts', posts);
-app.use('/api/users', users);
+        app.use(express.json());
+        app.use(express.static(__dirname + '/public'));
+        app.use('/api', router);
+        app.all("*", (request, response) => response.json({ success: false, error: ErrorCode.NotFound }));
+        //app.use('/reg', express.static(registerPath));
+        //app.use('/posts', express.static(clientPath));
+    } catch (error) {
+        console.log(error.message);
+    }
+})();
 
-app.listen(port, () => {
-    console.log(`Server has been started on ${port} port..`);
-});
+app.listen(config.port, () => console.log(`Server has been started on ${config.port} port..`));
