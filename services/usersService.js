@@ -47,15 +47,13 @@ async function postUser(payload) {
             return { success: false, error: ErrorCode.AlreadyExist };
         }
 
-        const salt = await bcrypt.genSalt(10);
-
         user = new User({
             email: payload.email,
-            password: await bcrypt.hash(payload.password, salt)
+            password: payload.password
         });
-        
-        //user.password = await bcrypt.hash(payload.password, salt);
 
+        //const salt = await bcrypt.genSalt(10);
+        //user.password = await bcrypt.hash(payload.password, salt);
         //await user.save();
 
         const token = user.generateAuthToken();

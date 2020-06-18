@@ -36,7 +36,9 @@ async function register(payload) {
             return { success: false, error: ErrorCode.InvalidPayload };
         }
 
-        const user = await User.create(payload);
+        const { confirmPassword, password, ...cleanedPayload } = payload;
+
+        const user = await User.create({ ...cleanedPayload, password: bcrypt.hashSync(password, 10) });
         const token = user.generateAuthToken();
         if (!token) {
             return { success: false, error: ErrorCode.UnexpectedError };
