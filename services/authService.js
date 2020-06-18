@@ -4,12 +4,12 @@ const bcrypt = require('bcrypt');
 
 async function login(payload) {
     try {
-        const user = await User.findOne(payload.email);
+        const user = await User.findOne({ email: payload.email });
         if (!user) {
             return { success: false, error: ErrorCode.NotFound };
         }
 
-        if (!await bcrypt.compare(payload.password, user.password)) {
+        if (payload.password !== user.password) {
             return { success: false, error: ErrorCode.InvalidCredentials };
         }
 
@@ -27,12 +27,12 @@ async function login(payload) {
 
 async function register(payload) {
     try {
-        const foundedUser = await User.findOne(payload.email);
+        const foundedUser = await User.findOne({ email: payload.email });
         if (foundedUser) {
             return { success: false, error: ErrorCode.AlreadyExist };
         }
 
-        if (!await bcrypt.compare(payload.password, payload.confirmPassword)) {
+        if (payload.password !== payload.confirmPassword) {
             return { success: false, error: ErrorCode.InvalidPayload };
         }
 

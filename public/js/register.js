@@ -1,4 +1,4 @@
-const API_POSTS = '/api/users';
+const API_POSTS = '/api/auth/register';
 const API_HEADERS = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

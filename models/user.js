@@ -16,12 +16,6 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 100,
   },
-  confirmPassword: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 100,
-  },
   isAdmin: Boolean,
 });
 
